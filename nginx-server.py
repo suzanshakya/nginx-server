@@ -5,7 +5,6 @@ Usage: %prog [path:.] [port:8000]
 
 import os
 import sys
-import webbrowser
 
 conf_template = """\
 worker_processes 1;
@@ -52,7 +51,6 @@ def main():
         conf_data = conf_template % dict(root=root, port=port)
         f.write(conf_data)
     print >>sys.stderr, "%r serving in %r" % (root, address)
-    webbrowser.open(address)
     os.execvp('nginx', ['nginx', '-c', conf])
 
 main()
