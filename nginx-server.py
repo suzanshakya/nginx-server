@@ -8,6 +8,7 @@ import sys
 import subprocess
 
 conf_template = """\
+error_log stderr;
 worker_processes 1;
 
 daemon off;
