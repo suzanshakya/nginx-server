@@ -17,7 +17,7 @@ events {
 }
 
 http {
-    include %(mime_types_file)s;
+    %(include_mime)s
     default_type application/octet-stream;
 
     server {
@@ -32,20 +32,24 @@ http {
 }
 """
 
-def get_mime_types_file():
+def include_mime():
     # default location when nginx is installed by home brew in Mac OS
     default_location = "/usr/local/etc/nginx/mime.types"
     if os.path.exists(default_location):
-        return default_location
+        mime_file = default_location
     else:
         file_to_locate = "*/nginx/mime.types"
         output = subprocess.check_output(["locate", file_to_locate])
         files = filter(os.path.exists, output.split("\n"))
-        try:
-            return files[0]
-        except IndexError:
+        if files:
+            mime_file = files[0]
+        else:
             print >>sys.stderr, "We could not locate %r file." % file_to_locate
-            raise SystemExit
+            mime_file = None
+    if mime_file:
+        return "include %s;" % mime_file
+    else:
+        return ""
 
 def get_realpath(path):
     return os.path.realpath(os.path.join(os.path.abspath(os.curdir), path))
@@ -65,7 +69,7 @@ def main():
 
     conf = "/tmp/nginx.conf"
     with open(conf, "w") as f:
-        conf_data = conf_template % dict(root=root, port=port, mime_types_file=get_mime_types_file())
+        conf_data = conf_template % dict(root=root, port=port, include_mime=include_mime())
         f.write(conf_data)
     print >>sys.stderr, "%r serving in %r" % (root, address)
     os.execvp("nginx", ["nginx", "-c", conf])
