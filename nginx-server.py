@@ -38,7 +38,7 @@ def get_mime_types_file():
     if os.path.exists(default_location):
         return default_location
     else:
-        file_to_locate = "*nginx/mime.types"
+        file_to_locate = "*/nginx/mime.types"
         output = subprocess.check_output(["locate", file_to_locate])
         files = filter(os.path.exists, output.split("\n"))
         try:
