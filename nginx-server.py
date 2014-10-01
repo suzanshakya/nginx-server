@@ -39,7 +39,8 @@ def include_mime():
         mime_file = default_location
     else:
         file_to_locate = "*/nginx/mime.types"
-        output = subprocess.check_output(["locate", file_to_locate])
+        proc = subprocess.Popen(["locate", file_to_locate], stdout=subprocess.PIPE)
+        output, error = proc.communicate()
         files = filter(os.path.exists, output.split("\n"))
         if files:
             mime_file = files[0]
