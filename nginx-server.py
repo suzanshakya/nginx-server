@@ -20,6 +20,13 @@ http {
     %(include_mime)s
     default_type application/octet-stream;
 
+    gzip             on;
+    gzip_http_version 1.1;
+    gzip_proxied     any;
+    gzip_types       text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+    gzip_disable     "MSIE [1-6]\.";
+    gzip_comp_level  6;
+
     server {
         listen %(port)s;
 
