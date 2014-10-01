@@ -56,7 +56,9 @@ def main():
     address = "http://localhost:%s" % port
 
     conf = "/tmp/nginx.conf"
-    shutil.copyfile('mime.types', '/tmp/mime.types')
+    mime_source = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'mime.types')
+    mime_dest = '/tmp/mime.types'
+    shutil.copyfile(mime_source, mime_dest)
     with open(conf, "w") as f:
         conf_data = conf_template % dict(root=root, port=port)
         f.write(conf_data)
