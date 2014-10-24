@@ -8,7 +8,8 @@ import sys
 import shutil
 
 conf_template = """\
-error_log stderr;
+error_log /dev/stderr;
+pid /tmp/nginx-server.py.pid;
 worker_processes 1;
 
 daemon off;
@@ -19,6 +20,7 @@ events {
 http {
     include mime.types;
     default_type application/octet-stream;
+    access_log /dev/stdout;
 
     gzip             on;
     gzip_http_version 1.1;
