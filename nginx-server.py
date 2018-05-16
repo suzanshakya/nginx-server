@@ -6,10 +6,11 @@ Usage: %prog [path:.] [port:8000]
 import os
 import sys
 import shutil
+from tempfile import mkdtemp
 
 conf_template = """\
 error_log /dev/stderr;
-pid /tmp/nginx-server.py.pid;
+pid %(temp_dir)s/nginx-server.py.pid;
 worker_processes 1;
 
 daemon off;
@@ -57,14 +58,16 @@ def main():
 
     address = "http://localhost:%s" % port
 
-    conf = "/tmp/nginx.conf"
+    temp_dir = mkdtemp()
+
+    conf = os.path.join(temp_dir, "nginx.conf")
     mime_source = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'mime.types')
-    mime_dest = '/tmp/mime.types'
+    mime_dest = os.path.join(temp_dir, "mime.types")
     shutil.copyfile(mime_source, mime_dest)
     with open(conf, "w") as f:
-        conf_data = conf_template % dict(root=root, port=port)
+        conf_data = conf_template % dict(root=root, port=port, temp_dir=temp_dir)
         f.write(conf_data)
     print("%r serving in %r" % (root, address), file=sys.stderr)
-    os.execvp("nginx", ["nginx", "-c", conf])
+    os.execvp("nginx", ["nginx", "-c", conf, "-p", temp_dir])
 
 main()
