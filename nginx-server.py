@@ -64,7 +64,7 @@ def main():
     with open(conf, "w") as f:
         conf_data = conf_template % dict(root=root, port=port)
         f.write(conf_data)
-    print >>sys.stderr, "%r serving in %r" % (root, address)
+    print("%r serving in %r" % (root, address), file=sys.stderr)
     os.execvp("nginx", ["nginx", "-c", conf])
 
 main()
