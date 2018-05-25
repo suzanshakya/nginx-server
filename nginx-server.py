@@ -3,6 +3,7 @@
 Usage: %prog [path:.] [port:8000]
 """
 
+from __future__ import print_function
 import os
 import sys
 import shutil
@@ -58,7 +59,7 @@ def main():
 
     address = "http://localhost:%s" % port
 
-    temp_dir = mkdtemp()
+    temp_dir = mkdtemp(prefix="nginx-server-")
 
     conf = os.path.join(temp_dir, "nginx.conf")
     mime_source = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'mime.types')
@@ -68,6 +69,6 @@ def main():
         conf_data = conf_template % dict(root=root, port=port, temp_dir=temp_dir)
         f.write(conf_data)
     print("%r serving in %r" % (root, address), file=sys.stderr)
-    os.execvp("nginx", ["nginx", "-c", conf, "-p", temp_dir])
+    os.execvp("nginx", ["nginx", "-c", conf])
 
 main()
