@@ -7,6 +7,7 @@ from __future__ import print_function
 import os
 import sys
 import shutil
+import socket
 from tempfile import mkdtemp
 
 conf_template = """\
@@ -43,6 +44,18 @@ http {
 }
 """
 
+def get_ip():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        # doesn't even have to be reachable
+        s.connect(('10.255.255.255', 1))
+        ip = s.getsockname()[0]
+    except:
+        ip = '127.0.0.1'
+    finally:
+        s.close()
+    return ip
+
 def get_realpath(path):
     return os.path.realpath(os.path.join(os.path.abspath(os.curdir), path))
 
@@ -57,7 +70,7 @@ def main():
     except:
         port = "8000"
 
-    address = "http://localhost:%s" % port
+    address = "http://%s:%s" % (get_ip(), port)
 
     temp_dir = mkdtemp(prefix="nginx-server-")
 
