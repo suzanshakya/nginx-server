@@ -64,6 +64,12 @@ def main():
         path = sys.argv[1]
     except:
         path = "."
+
+    if not os.path.exists(path):
+        raise SystemExit("Directory %r doesn't exist." % path)
+    elif not os.path.isdir(path):
+        raise SystemExit("%r is not a directory." % path)
+
     root = get_realpath(path)
     try:
         port = sys.argv[2]
