@@ -3,14 +3,12 @@ nginx-server
 
 Run nginx server from command line as you would run python's SimpleHTTPServer
 
-**Install**
-
+**Install**  
 make  
 export PATH=~/bin:$PATH
 
 
-**Examples:**
-
+**Examples:**  
 Serve current directory in port 8000  
 `# nginx-server.py`
 
