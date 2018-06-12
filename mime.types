@@ -548,7 +548,7 @@ types {
 	image/vnd.globalgraphics.pgb                                               pgb;
 	image/vnd.microsoft.icon                                                   ico;
 	image/vnd.ms-modi                                                          mdi;
-	image/vnd.radiance                                                         hdr rgbe xyz e
+	image/vnd.radiance                                                         hdr rgbe xyze
 	image/vnd.sealed.png                                                       spng spn s1n;
 	image/vnd.sealedmedia.softseal.gif                                         sgif sgi s1g;
 	image/vnd.sealedmedia.softseal.jpg                                         sjpg sjp s1j;
@@ -720,7 +720,7 @@ types {
 	text/x-pod                                                                 pod;
 	text/x-setext                                                              etx;
 	text/x-vcard                                                               vcf;
-	video webm                                                                 webm;
+	video/webm                                                                 webm;
 	video/x-annodex                                                            axv;
 	video/x-flv                                                                flv;
 	video/x-javafx                                                             fxm;
