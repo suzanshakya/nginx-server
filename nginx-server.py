@@ -22,6 +22,7 @@ events {
 
 http {
     include mime.types;
+    types_hash_max_size 2048;
     default_type application/octet-stream;
     access_log /dev/stdout;
 
