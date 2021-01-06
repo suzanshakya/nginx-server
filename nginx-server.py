@@ -79,6 +79,7 @@ def main():
         raise SystemExit("%r is not a directory." % path)
 
     root = get_realpath(path)
+
     try:
         port = sys.argv[2]
     except:
@@ -91,13 +92,15 @@ def main():
 
     temp_dir = mkdtemp(prefix="nginx-server-")
 
-    conf = os.path.join(temp_dir, "nginx.conf")
     mime_source = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'mime.types')
     mime_dest = os.path.join(temp_dir, "mime.types")
     shutil.copyfile(mime_source, mime_dest)
+
+    conf = os.path.join(temp_dir, "nginx.conf")
     with open(conf, "w") as f:
         conf_data = conf_template % dict(root=root, port=port, temp_dir=temp_dir)
         f.write(conf_data)
+
     print("%r serving in %r" % (root, address), file=sys.stderr)
     os.execvp("nginx", ["nginx", "-c", conf])
 
