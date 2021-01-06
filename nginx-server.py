@@ -57,6 +57,13 @@ def get_ip():
         s.close()
     return ip
 
+def is_port_in_use(port):
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        return s.connect_ex(('localhost', port)) == 0
+    finally:
+        s.close()
+
 def get_realpath(path):
     return os.path.realpath(os.path.join(os.path.abspath(os.curdir), path))
 
@@ -75,7 +82,10 @@ def main():
     try:
         port = sys.argv[2]
     except:
-        port = "8000"
+        port = 8000
+        while is_port_in_use(port):
+            print("Port %d is already in use. Trying %d" % (port, port+1), file=sys.stderr)
+            port += 1
 
     address = "http://%s:%s" % (get_ip(), port)
 
