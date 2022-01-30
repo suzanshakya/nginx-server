@@ -102,6 +102,9 @@ def main():
         f.write(conf_data)
 
     print("%r serving in %r" % (root, address), file=sys.stderr)
-    os.execvp("nginx", ["nginx", "-c", conf])
+    try:
+        os.execvp("nginx", ["nginx", "-c", conf])
+    except FileNotFoundError:
+        sys.exit("FAILED: nginx not found!")
 
 main()
